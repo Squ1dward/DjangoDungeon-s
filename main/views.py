@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.template import loader
-from .models import User
+from .models import User, ChatProfile, ChatMessage, Chat
 
 from django.views.generic import TemplateView
 
@@ -11,9 +11,10 @@ from django.views.generic import TemplateView
 def index(request):
     model = User.objects.all()
     template = loader.get_template("main/index.html")
-    context = {
-        'numbers': {1,2,3,4,5,6,7,8,9,10},
-    }
+    #chat_profile = ChatProfile.objects.get(createdBy=request.user.id)
+    #chat_messages = ChatMessage.objects.filter(profileId=chat_profile.id)
+    #context = {chat_profile, chat_messages}
+    context = {}
     return HttpResponse(template.render(context, request))
 
 def stats(request):
