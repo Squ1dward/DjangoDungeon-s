@@ -103,45 +103,53 @@
 
         </div>
         <div class="chat-field text-center" style="border: solid 1.2px blue">
-            <div class="chat-background">
-                <!--
-                {% for schleife (var chat in chatModel) %}
-
-                <div class="chat-container {{isNotDungeonMaster() -> true: 'chat-con-right' / false: 'chat-con-left'}}">
-                  <img src="{% static 'img/char1.png' %}" alt="Avatar" class="avatar-img {{isNotDungeonMaster() -> true: 'darker' / false: ''}}">
-                  <p>{{chat.text}}</p>
-                  <span class="time-right">{{chat.time}}</span>
+            {% if request.user.is_authenticated%}
+                <div class="chat-background">
+                        {% for msg in messages %}
+                            {% if msg.userId_id > 0 %}
+                                <div class="chat-container chat-con-right darker">
+                                  <img src="{% static 'img/char2.jpg' %}" alt="Avatar" class="avatar-img right">
+                                  <p>{{msg.message}}</p>
+                                  <span class="time-right">{{msg.postDate}}</span>
+                                </div>
+                            {% else %}
+                                <div class="chat-container chat-con-left">
+                                  <img src="{% static 'img/char1.png' %}" alt="Avatar" class="avatar-img">
+                                  <p>{{msg.message}}</p>
+                                  <span class="time-right">{{msg.postDate}}</span>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    <!--<hr>
+                    <div class="chat-container chat-con-left">
+                      <img src="{% static 'img/char1.png' %}" alt="Avatar" class="avatar-img">
+                      <p>You need to save the village from evil goblins, they choose you as the only one goblin-hunter. You need to defeat the goblin-chief. Do you want to join the adventure?</p>
+                      <span class="time-right">11:00</span>
+                    </div>
+                    <div class="chat-container chat-con-right darker">
+                        <img src="{% static 'img/char2.jpg' %}" alt="Avatar" class="avatar-img right">
+                        <p>Yes, i want!</p>
+                        <span class="time-left">11:01</span>
+                    </div>
+                    <div class="chat-container chat-con-left">
+                      <img src="{% static 'img/char1.png' %}" alt="Avatar" class="avatar-img">
+                      <p>Excellent, i will give you this sword to use.</p>
+                      <span class="time-right">11:00</span>
+                    </div>
+                    <div class="chat-container chat-con-left">
+                      <img src="{% static 'img/char1.png' %}" alt="Avatar" class="avatar-img">
+                      <img src="{% static 'img/sword.png' %}" width="20%" height="20%"/>
+                      <span class="time-right">11:00</span>
+                    </div>-->
                 </div>
-                {% end loop %}
-                -->
-                <div class="chat-container chat-con-left">
-                  <img src="{% static 'img/char1.png' %}" alt="Avatar" class="avatar-img">
-                  <p>You need to save the village from evil goblins, they choose you as the only one goblin-hunter. You need to defeat the goblin-chief. Do you want to join the adventure?</p>
-                  <span class="time-right">11:00</span>
+                <hr/>
+                <div class="container input-group mb-3">
+                    <textarea class="form-control chat-input" placeholder="What do you want to do?"></textarea>
+                    <button class="btn btn-primary" type="button" id="button-addon2">Send</button>
                 </div>
-                <div class="chat-container chat-con-right darker">
-                    <img src="{% static 'img/char2.jpg' %}" alt="Avatar" class="avatar-img right">
-                    <p>Yes, i want!</p>
-                    <span class="time-left">11:01</span>
-                </div>
-                <div class="chat-container chat-con-left">
-                  <img src="{% static 'img/char1.png' %}" alt="Avatar" class="avatar-img">
-                  <p>Excellent, i will give you this sword to use.</p>
-                  <span class="time-right">11:00</span>
-                </div>
-                <div class="chat-container chat-con-left">
-                  <img src="{% static 'img/char1.png' %}" alt="Avatar" class="avatar-img">
-                  <img src="{% static 'img/sword.png' %}" width="20%" height="20%"/>
-                  <span class="time-right">11:00</span>
-                </div>
-            </div>
-            <hr/>
-            <div class="container input-group mb-3">
-                <textarea class="form-control chat-input" placeholder="What do you want to do?"></textarea>
-                <button class="btn btn-primary" type="button" id="button-addon2">Send</button>
-            </div>
-
-            <!--<img src="{% static 'img/template.gif' %}" alt="dungeons template" width="912px" height="720px">-->
+            {% else %}
+                <p>melde dich an!</p>
+            {% endif %}
         </div>
     </div>
 </main>

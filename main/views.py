@@ -9,13 +9,17 @@ from django.views.generic import TemplateView
 # Create your views here.
 
 def index(request):
+    messages_dict = {}
     model = User.objects.all()
     template = loader.get_template("main/index.html")
-    #chat_profile = ChatProfile.objects.get(createdBy=request.user.id)
-    #chat_messages = ChatMessage.objects.filter(profileId=chat_profile.id)
-    #context = {chat_profile, chat_messages}
     context = {}
-    return HttpResponse(template.render(context, request))
+    if request.user.is_authenticated:
+        chat_profile = ChatProfile.objects.get(createdBy=request.user.id)
+        chat_messages = ChatMessage.objects.filter(profileId=chat_profile.id).values()
+        messages_dict = {
+            'messages': chat_messages,
+        }
+    return HttpResponse(template.render(messages_dict, request))
 
 def stats(request):
     model = User.objects.all()
