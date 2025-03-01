@@ -21,12 +21,17 @@
         }
 
         .chat-background {
-            max-height: 700px;
+            max-height: 600px;
             overflow-y: scroll;
         }
 
         .chat-con-left {
             margin-right: 40%;
+            text-align: start;
+        }
+
+        .chat-con-right {
+            text-align: end;
         }
 
         /* Darker chat container */
@@ -59,6 +64,12 @@
           margin-right:0;
         }
 
+        .chat-input {
+            min-height: 35px;
+            height: 40px;
+            max-height: 100px;
+        }
+
         /* Style time text */
         .time-right {
           float: right;
@@ -71,6 +82,11 @@
           color: #999;
         }
     </style>
+    <script>
+        function clearTextarea() {
+            document.getElementById('sendBtn').value = '';
+        }
+    </script>
 </head>
 <body>
 <header>
@@ -91,6 +107,11 @@
       </ul>
         {% if user.is_superuser %}
             <a class="d-flex btn btn-outline-primary" href="/admin/">Admin</a>
+        {% endif %}
+        {% if user.is_authenticated %}
+            <a class="d-flex btn btn-outline-primary" href="/logout/">Logout</a>
+        {% else %}
+            <a class="d-flex btn btn-primary" href="/login/">Login</a>
         {% endif %}
     </div>
   </div>
@@ -116,7 +137,7 @@
                                 <div class="chat-container chat-con-left">
                                   <img src="{% static 'img/char1.png' %}" alt="Avatar" class="avatar-img">
                                   <p>{{msg.message}}</p>
-                                  <span class="time-right">{{msg.postDate}}</span>
+                                  <span class="time-left">{{msg.postDate}}</span>
                                 </div>
                             {% endif %}
                         {% endfor %}
@@ -143,12 +164,19 @@
                     </div>-->
                 </div>
                 <hr/>
-                <div class="container input-group mb-3">
-                    <textarea class="form-control chat-input" placeholder="What do you want to do?"></textarea>
-                    <button class="btn btn-primary" type="button" id="button-addon2">Send</button>
-                </div>
+                <form method="post" onsubmit="clearTextarea()">
+                    {% csrf_token %}
+                    <div class="container input-group mb-3">
+                        <!--<textarea class="form-control chat-input" placeholder="What do you want to do?"></textarea>-->
+                        {{ form.text_field }}
+                        <button class="btn btn-primary" type="submit" id="sendBtn">Send</button>
+                    </div>
+                </form>
+                <br>
+                <a class="btn btn-outline-danger" href="/delete_chat_view/" style="margin-bottom: 0.5%">Neuanfangen</a>
             {% else %}
                 <p>melde dich an!</p>
+                <a href="/login/" class="btn btn-primary">Anmelden</a>
             {% endif %}
         </div>
     </div>

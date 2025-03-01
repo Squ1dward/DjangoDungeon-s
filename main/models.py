@@ -67,12 +67,12 @@ class CharacterWeapon(models.Model):
     weapon = models.ForeignKey(Weapon, on_delete=models.CASCADE)
 
 class ChatProfile(models.Model):
-    id = models.BigIntegerField(primary_key=True,auto_created=True)
+    id = models.BigAutoField(primary_key=True)
     creationDate = models.DateTimeField()
     createdBy = models.ForeignKey(User, on_delete=models.CASCADE)
 
 class ChatMessage(models.Model):
-    id = models.BigIntegerField(primary_key=True,auto_created=True)
+    id = models.BigAutoField(primary_key=True)
     profileId = models.ForeignKey(ChatProfile, on_delete=models.CASCADE)
     userId = models.ForeignKey(User, on_delete=models.CASCADE)
     message = models.TextField()
