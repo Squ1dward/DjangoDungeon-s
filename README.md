@@ -10,15 +10,12 @@ a tavern, a blacksmith, a herbalist shop,
 
 
 
-
-
-
 ### Items List 
 rope 
 lockPick
 
 
-#### armors
+### armors
 light_armor 
 heavy_armor 
 chainmail_armor 
@@ -26,7 +23,7 @@ thiefs_robe
 magicians_robe
 
 
-#### weapons
+### weapons
 lance 
 sword 
 broad sword
@@ -38,14 +35,8 @@ axe
 work_hammer 
 war_hammer 
 
-#### potions 
+### potions 
 
 health_potion
 mana_potion
 
-
-
-
-
-=======
->>>>>>> Stashed changes
