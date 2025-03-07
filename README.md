@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 # DjangoDungeon-s
 
 
@@ -46,3 +47,5 @@ mana_potion
 
 
 
+=======
+>>>>>>> Stashed changes
