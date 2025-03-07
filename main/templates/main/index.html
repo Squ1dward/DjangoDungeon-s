@@ -6,6 +6,87 @@
     <title>DjangoDungeons</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        .chat-container {
+          border: 2px solid #dedede;
+          background-color: #f1f1f1;
+          border-radius: 5px;
+          padding: 10px;
+          margin: 1% 0 1% 0;
+        }
+
+        .chat-field {
+            width: 50%;
+            margin: auto;
+        }
+
+        .chat-background {
+            max-height: 600px;
+            overflow-y: scroll;
+        }
+
+        .chat-con-left {
+            margin-right: 40%;
+            text-align: start;
+        }
+
+        .chat-con-right {
+            text-align: end;
+        }
+
+        /* Darker chat container */
+        .darker {
+          border-color: #ccc;
+          background-color: #ddd;
+          margin-left: 40%;
+        }
+
+        /* Clear floats */
+        .chat-container::after {
+          content: "";
+          clear: both;
+          display: table;
+        }
+
+        /* Style images */
+        .avatar-img {
+          float: left;
+          max-width: 60px;
+          width: 100%;
+          margin-right: 20px;
+          border-radius: 50%;
+        }
+
+        /* Style the right image */
+        .chat-container img.right {
+          float: right;
+          margin-left: 20px;
+          margin-right:0;
+        }
+
+        .chat-input {
+            min-height: 35px;
+            height: 40px;
+            max-height: 100px;
+        }
+
+        /* Style time text */
+        .time-right {
+          float: right;
+          color: #aaa;
+        }
+
+        /* Style time text */
+        .time-left {
+          float: left;
+          color: #999;
+        }
+    </style>
+    <script>
+        function clearTextarea() {
+            document.getElementById('sendBtn').value = '';
+        }
+    </script>
 </head>
 <body>
 <header>
@@ -27,6 +108,11 @@
         {% if user.is_superuser %}
             <a class="d-flex btn btn-outline-primary" href="/admin/">Admin</a>
         {% endif %}
+        {% if user.is_authenticated %}
+            <a class="d-flex btn btn-outline-primary" href="/logout/">Logout</a>
+        {% else %}
+            <a class="d-flex btn btn-primary" href="/login/">Login</a>
+        {% endif %}
     </div>
   </div>
 </nav>
@@ -37,8 +123,61 @@
             <h2>Django Dungeon-s</h2><p class="h5">Hello {{ user.username }}</p>
 
         </div>
-        <div class="container-fluid text-center" style="border: solid 1.2px blue">
-            <img src="{% static 'img/template.gif' %}" alt="dungeons template" width="912px" height="720px">
+        <div class="chat-field text-center" style="border: solid 1.2px blue">
+            {% if request.user.is_authenticated%}
+                <div class="chat-background">
+                        {% for msg in messages %}
+                            {% if msg.userId_id > 0 %}
+                                <div class="chat-container chat-con-right darker">
+                                  <img src="{% static 'img/char2.jpg' %}" alt="Avatar" class="avatar-img right">
+                                  <p>{{msg.message}}</p>
+                                  <span class="time-right">{{msg.postDate}}</span>
+                                </div>
+                            {% else %}
+                                <div class="chat-container chat-con-left">
+                                  <img src="{% static 'img/char1.png' %}" alt="Avatar" class="avatar-img">
+                                  <p>{{msg.message}}</p>
+                                  <span class="time-left">{{msg.postDate}}</span>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    <!--<hr>
+                    <div class="chat-container chat-con-left">
+                      <img src="{% static 'img/char1.png' %}" alt="Avatar" class="avatar-img">
+                      <p>You need to save the village from evil goblins, they choose you as the only one goblin-hunter. You need to defeat the goblin-chief. Do you want to join the adventure?</p>
+                      <span class="time-right">11:00</span>
+                    </div>
+                    <div class="chat-container chat-con-right darker">
+                        <img src="{% static 'img/char2.jpg' %}" alt="Avatar" class="avatar-img right">
+                        <p>Yes, i want!</p>
+                        <span class="time-left">11:01</span>
+                    </div>
+                    <div class="chat-container chat-con-left">
+                      <img src="{% static 'img/char1.png' %}" alt="Avatar" class="avatar-img">
+                      <p>Excellent, i will give you this sword to use.</p>
+                      <span class="time-right">11:00</span>
+                    </div>
+                    <div class="chat-container chat-con-left">
+                      <img src="{% static 'img/char1.png' %}" alt="Avatar" class="avatar-img">
+                      <img src="{% static 'img/sword.png' %}" width="20%" height="20%"/>
+                      <span class="time-right">11:00</span>
+                    </div>-->
+                </div>
+                <hr/>
+                <form method="post" onsubmit="clearTextarea()">
+                    {% csrf_token %}
+                    <div class="container input-group mb-3">
+                        <!--<textarea class="form-control chat-input" placeholder="What do you want to do?"></textarea>-->
+                        {{ form.text_field }}
+                        <button class="btn btn-primary" type="submit" id="sendBtn">Send</button>
+                    </div>
+                </form>
+                <br>
+                <a class="btn btn-outline-danger" href="/delete_chat_view/" style="margin-bottom: 0.5%">Neuanfangen</a>
+            {% else %}
+                <p>melde dich an!</p>
+                <a href="/login/" class="btn btn-primary">Anmelden</a>
+            {% endif %}
         </div>
     </div>
 </main>
