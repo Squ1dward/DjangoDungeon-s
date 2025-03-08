@@ -70,6 +70,7 @@ class ChatProfile(models.Model):
     id = models.BigAutoField(primary_key=True)
     creationDate = models.DateTimeField()
     createdBy = models.ForeignKey(User, on_delete=models.CASCADE)
+    jsonText = models.TextField(null=True)
 
 class ChatMessage(models.Model):
     id = models.BigAutoField(primary_key=True)
