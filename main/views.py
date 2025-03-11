@@ -119,36 +119,56 @@ def world_building(request):
     if request.method == 'POST':
         form = WorldBuildingFormular(request.POST)
         if form.is_valid():
-            print(form.cleaned_data)  # Hier kannst du z.B. speichern oder weitergeben
+            print(form.cleaned_data['name'])
+            print(form.cleaned_data['rasse'])
+            print(form.cleaned_data['geschlecht'])
+            print(form.cleaned_data['kampf'])
+            print(form.cleaned_data)
+
+            # Hier rufst du get_gpt mit den Formulardaten auf
+            response = get_gpt(form_data=form.cleaned_data)
+            # Rest der Logik...
+            return redirect('/')
     else:
         form = WorldBuildingFormular()
 
     return render(request, 'main/world_building.html', {'form': form})
 
-# Hier wird text hinzugefügt für charer erstelung
-def get_gpt(user_prompt):
-    if user_prompt is None:
-        user_prompt = "You're a DungeonMaster, you create an dungeon scenario and I'm the main character. You start the story. Send also another text summaring in words what you wrote. The player has chosen these criteria ... and has written the story for himself ... and has written the following story for the world ..."
-    response = requests.post(
-      url="https://openrouter.ai/api/v1/chat/completions",
-      headers={
-        "Authorization": "Bearer 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",
-        "Content-Type": "application/json",
-        "HTTP-Referer": "<YOUR_SITE_URL>", # Optional. Site URL for rankings on openrouter.ai.
-        "X-Title": "<YOUR_SITE_NAME>", # Optional. Site title for rankings on openrouter.ai.
-      },
-      data=json.dumps({
-        "model": "cognitivecomputations/dolphin3.0-mistral-24b:free",
-        "messages": [
-          {
-            "role": "user",
-            "content": user_prompt
-          }
-        ],
 
-      })
+def get_gpt(form_data=None, user_prompt=None):
+    """
+    Generiert einen Prompt für den GPT-Dienst.
+
+    Args:
+        form_data (dict, optional): Die Formulardaten
+        user_prompt (str, optional): Ein vordefinierter Prompt
+    """
+    if user_prompt is None and form_data is not None:
+        user_data = ", ".join(f"{key}: {value}" for key, value in form_data.items())
+        user_prompt = "You're a DungeonMaster, you create a dungeon scenario and I'm the main character. You start the story. Send also another text summarizing in words what you wrote. The player has given the following: " + user_data
+    elif user_prompt is None:
+        user_prompt = "You're a DungeonMaster, you create a dungeon scenario and I'm the main character. You start the story."
+
+    response = requests.post(
+        url="https://openrouter.ai/api/v1/chat/completions",
+        headers={
+            "Authorization": "Bearer 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",
+            "Content-Type": "application/json",
+            "HTTP-Referer": "<YOUR_SITE_URL>",  # Optional
+            "X-Title": "<YOUR_SITE_NAME>",  # Optional
+        },
+        data=json.dumps({
+            "model": "cognitivecomputations/dolphin3.0-mistral-24b:free",
+            "messages": [
+                {
+                    "role": "user",
+                    "content": user_prompt
+                }
+            ],
+        })
     )
     response_data = response.json()
     first_response = response_data['choices'][0]['message']['content']
     return first_response
+
 
