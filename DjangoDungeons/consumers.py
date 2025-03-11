@@ -1,7 +1,7 @@
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 
-class Chatter(AsyncWebsocketConsumer):
+class chatter(AsyncWebsocketConsumer):
     async def connect(self):
         """Handles a new WebSocket connection."""
         self.lobby_name = self.scope["url_route"]["kwargs"]["lobby_name"]
@@ -47,3 +47,6 @@ class Chatter(AsyncWebsocketConsumer):
             "message": event["message"],
             "username": event["username"]
         }))
+
+
+

@@ -5,14 +5,14 @@
     <meta charset="UTF-8">
     <title>DjangoDungeons</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         .chat-container {
           border: 2px solid #dedede;
           background-color: #f1f1f1;
           border-radius: 5px;
           padding: 10px;
-          margin: 1% 0 1% 0;
+          margin: 1% 0;
         }
 
         .chat-field {
@@ -21,7 +21,7 @@
         }
 
         .chat-background {
-            max-height: 600px;
+            max-height: 400px;
             overflow-y: scroll;
         }
 
@@ -34,159 +34,136 @@
             text-align: end;
         }
 
-        /* Darker chat container */
         .darker {
           border-color: #ccc;
           background-color: #ddd;
           margin-left: 40%;
         }
 
-        /* Clear floats */
-        .chat-container::after {
-          content: "";
-          clear: both;
-          display: table;
-        }
-
-        /* Style images */
         .avatar-img {
           float: left;
-          max-width: 60px;
+          max-width: 50px;
           width: 100%;
-          margin-right: 20px;
+          margin-right: 10px;
           border-radius: 50%;
         }
 
-        /* Style the right image */
         .chat-container img.right {
           float: right;
-          margin-left: 20px;
+          margin-left: 10px;
           margin-right:0;
         }
 
         .chat-input {
-            min-height: 35px;
-            height: 40px;
-            max-height: 100px;
+            width: 80%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
         }
 
-        /* Style time text */
-        .time-right {
-          float: right;
-          color: #aaa;
+        .chat-button {
+            padding: 10px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
         }
 
-        /* Style time text */
-        .time-left {
-          float: left;
-          color: #999;
+        .chat-button:hover {
+            background: #218838;
         }
     </style>
-    <script>
-        function clearTextarea() {
-            document.getElementById('sendBtn').value = '';
-        }
-    </script>
 </head>
 <body>
 <header>
 <nav class="navbar navbar-expand-lg bg-secondary bg-opacity-50">
   <div class="container-fluid">
     <a class="navbar-brand" href="/">Django Dungeons</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" disabled>Game</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/stats/">Stats</a>
-        </li>
-      </ul>
-        {% if user.is_superuser %}
-            <a class="d-flex btn btn-outline-primary" href="/admin/">Admin</a>
-        {% endif %}
-        {% if user.is_authenticated %}
-            <a class="d-flex btn btn-outline-primary" href="/logout/">Logout</a>
-        {% else %}
-            <a class="d-flex btn btn-primary" href="/login/">Login</a>
-        {% endif %}
-    </div>
   </div>
 </nav>
 </header>
+
 <main>
     <div class="container-fluid">
         <div class="container text-center">
-            <h2>Django Dungeon-s</h2><p class="h5">Hello {{ user.username }}</p>
+            <h2>Django Dungeon-s</h2>
+            <p class="h5">Hello {{ user.username }}</p>
+        </div>
 
-        </div>
+        {% if request.user.is_authenticated %}
         <div class="chat-field text-center" style="border: solid 1.2px blue">
-            {% if request.user.is_authenticated%}
-                <div class="chat-background">
-                        {% for msg in messages %}
-                            {% if msg.userId_id > 0 %}
-                                <div class="chat-container chat-con-right darker">
-                                  <img src="{% static 'img/char2.jpg' %}" alt="Avatar" class="avatar-img right">
-                                  <p>{{msg.message}}</p>
-                                  <span class="time-right">{{msg.postDate}}</span>
-                                </div>
-                            {% else %}
-                                <div class="chat-container chat-con-left">
-                                  <img src="{% static 'img/char1.png' %}" alt="Avatar" class="avatar-img">
-                                  <p>{{msg.message}}</p>
-                                  <span class="time-left">{{msg.postDate}}</span>
-                                </div>
-                            {% endif %}
-                        {% endfor %}
-                    <!--<hr>
-                    <div class="chat-container chat-con-left">
-                      <img src="{% static 'img/char1.png' %}" alt="Avatar" class="avatar-img">
-                      <p>You need to save the village from evil goblins, they choose you as the only one goblin-hunter. You need to defeat the goblin-chief. Do you want to join the adventure?</p>
-                      <span class="time-right">11:00</span>
-                    </div>
-                    <div class="chat-container chat-con-right darker">
-                        <img src="{% static 'img/char2.jpg' %}" alt="Avatar" class="avatar-img right">
-                        <p>Yes, i want!</p>
-                        <span class="time-left">11:01</span>
-                    </div>
-                    <div class="chat-container chat-con-left">
-                      <img src="{% static 'img/char1.png' %}" alt="Avatar" class="avatar-img">
-                      <p>Excellent, i will give you this sword to use.</p>
-                      <span class="time-right">11:00</span>
-                    </div>
-                    <div class="chat-container chat-con-left">
-                      <img src="{% static 'img/char1.png' %}" alt="Avatar" class="avatar-img">
-                      <img src="{% static 'img/sword.png' %}" width="20%" height="20%"/>
-                      <span class="time-right">11:00</span>
-                    </div>-->
-                </div>
-                <hr/>
-                <form method="post" onsubmit="clearTextarea()">
-                    {% csrf_token %}
-                    <div class="container input-group mb-3">
-                        <!--<textarea class="form-control chat-input" placeholder="What do you want to do?"></textarea>-->
-                        {{ form.text_field }}
-                        <button class="btn btn-primary" type="submit" id="sendBtn">Send</button>
-                    </div>
-                </form>
-                <br>
-                <a class="btn btn-outline-danger" href="/delete_chat_view/" style="margin-bottom: 0.5%">Neuanfangen</a>
-            {% else %}
-                <p>melde dich an!</p>
-                <a href="/login/" class="btn btn-primary">Anmelden</a>
-            {% endif %}
+            <div id="chat-background" class="chat-background">
+                {% for msg in messages %}
+                    {% if msg.userId_id == request.user.id %}
+                        <div class="chat-container chat-con-right darker">
+                          <img src="{% static 'img/char2.jpg' %}" alt="Avatar" class="avatar-img right">
+                          <p>{{ msg.message }}</p>
+                          <span class="time-right">{{ msg.postDate }}</span>
+                        </div>
+                    {% else %}
+                        <div class="chat-container chat-con-left">
+                          <img src="{% static 'img/char1.png' %}" alt="Avatar" class="avatar-img">
+                          <p>{{ msg.message }}</p>
+                          <span class="time-left">{{ msg.postDate }}</span>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            <hr/>
+            <div class="container input-group mb-3">
+                <input type="text" id="chat-input" class="chat-input" placeholder="Type your message...">
+                <button class="chat-button" onclick="sendMessage()">Send</button>
+            </div>
         </div>
+        {% else %}
+            <p>Please log in to chat!</p>
+            <a href="/login/" class="btn btn-primary">Login</a>
+        {% endif %}
     </div>
 </main>
 
 <footer class="border-top footer text-muted">
     <div class="container">
-        &copy; 2025 - DjangoDungeon-s - <a>Privacy</a>
+        &copy; 2025 - DjangoDungeon-s
     </div>
 </footer>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+<script>
+    const username = "{{ user.username }}";  // Get the current username
+    const chatSocket = new WebSocket(`ws://${window.location.host}/ws/chat/`);
+
+    chatSocket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+        const chatWindow = document.getElementById("chat-background");
+        
+        // Append new message dynamically
+        const messageDiv = document.createElement("div");
+        messageDiv.className = data.username === username ? "chat-container chat-con-right darker" : "chat-container chat-con-left";
+
+        messageDiv.innerHTML = `
+            <img src="{% static 'img/char2.jpg' %}" alt="Avatar" class="avatar-img ${data.username === username ? 'right' : ''}">
+            <p><strong>${data.username}:</strong> ${data.message}</p>
+        `;
+        
+        chatWindow.appendChild(messageDiv);
+        chatWindow.scrollTop = chatWindow.scrollHeight;  // Auto-scroll
+    };
+
+    function sendMessage() {
+        const inputField = document.getElementById("chat-input");
+        const message = inputField.value;
+
+        if (message.trim() !== "") {
+            chatSocket.send(JSON.stringify({
+                "username": username,
+                "message": message
+            }));
+            inputField.value = "";
+        }
+    }
+</script>
+
 </body>
 </html>
