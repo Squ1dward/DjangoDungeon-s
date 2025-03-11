@@ -6,10 +6,18 @@ from django.utils import timezone
 from .models import User, ChatProfile, ChatMessage
 from django.contrib.auth import authenticate, login, logout
 from .forms import LoginForm, ChatForm, RegisterForm
+from django import forms
+
+# views.py
+from django.shortcuts import render
+from .forms import WorldBuildingFormular
 
 from django.views.generic import TemplateView
 import requests
 import json
+
+
+
 
 
 # Create your views here.
@@ -107,9 +115,20 @@ def delete_chat_view(request):
     chat_message.save()
     return redirect('/')
 
+def world_building(request):
+    if request.method == 'POST':
+        form = WorldBuildingFormular(request.POST)
+        if form.is_valid():
+            print(form.cleaned_data)  # Hier kannst du z.B. speichern oder weitergeben
+    else:
+        form = WorldBuildingFormular()
+
+    return render(request, 'main/world_building.html', {'form': form})
+
+# Hier wird text hinzugefügt für charer erstelung
 def get_gpt(user_prompt):
     if user_prompt is None:
-        user_prompt = "You're a DungeonMaster, you create an dungeon scenario and I'm the main character. You start the story. Send also another text summaring in words what you wrote"
+        user_prompt = "You're a DungeonMaster, you create an dungeon scenario and I'm the main character. You start the story. Send also another text summaring in words what you wrote. The player has chosen these criteria ... and has written the story for himself ... and has written the following story for the world ..."
     response = requests.post(
       url="https://openrouter.ai/api/v1/chat/completions",
       headers={
@@ -132,3 +151,4 @@ def get_gpt(user_prompt):
     response_data = response.json()
     first_response = response_data['choices'][0]['message']['content']
     return first_response
+
