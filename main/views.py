@@ -1,3 +1,5 @@
+from logging import exception
+
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.template import loader
@@ -12,7 +14,6 @@ from django import forms
 from django.shortcuts import render
 from .forms import WorldBuildingFormular
 
-from django.views.generic import TemplateView
 import requests
 import json
 
@@ -40,7 +41,7 @@ def index(request):
             chat_message = ChatMessage(profileId=chat_profile, userId_id=request.user.id, message=message, postDate=timezone.now())
             chat_message.save()
             # -> Get response from GPT
-            response_from_gpt = get_gpt(message)
+            response_from_gpt = get_gpt(message,chat_profile)
             chat_message_from_gpt = ChatMessage(profileId=chat_profile, userId_id=0, message=response_from_gpt, postDate=timezone.now())
             chat_message_from_gpt.save()
             chat_profile = ChatProfile.objects.get(createdBy=request.user.id)
@@ -95,7 +96,7 @@ def register(request):
             new_chat_profile = ChatProfile(creationDate=timezone.now(), createdBy=user)
             new_chat_profile.save()
             chat_profile = ChatProfile.objects.get(createdBy=user)
-            new_message_from_gpt = ChatMessage(profileId=chat_profile, userId=User.objects.get(id=0), message=get_gpt(None), postDate=timezone.now())
+            new_message_from_gpt = ChatMessage(profileId=chat_profile, userId=User.objects.get(id=0), message=get_gpt(None,chat_profile), postDate=timezone.now())
             new_message_from_gpt.save()
             return redirect('index')
     else:
@@ -111,7 +112,7 @@ def delete_chat_view(request):
     chat_messages = ChatMessage.objects.filter(profileId=chat_profile.id)
     for chat_message in chat_messages:
         chat_message.delete()
-    chat_message = ChatMessage(profileId=chat_profile, userId=User.objects.get(id=0), message=get_gpt(None), postDate=timezone.now())
+    chat_message = ChatMessage(profileId=chat_profile, userId=User.objects.get(id=0), message=get_gpt(None,chat_profile), postDate=timezone.now())
     chat_message.save()
     return redirect('/')
 
@@ -126,7 +127,7 @@ def world_building(request):
             print(form.cleaned_data)
 
             # Hier rufst du get_gpt mit den Formulardaten auf
-            response = get_gpt(form_data=form.cleaned_data)
+            response = get_gpt_temp(form_data=form.cleaned_data)
             # Rest der Logik...
             return redirect('/')
     else:
@@ -135,7 +136,7 @@ def world_building(request):
     return render(request, 'main/world_building.html', {'form': form})
 
 
-def get_gpt(form_data=None, user_prompt=None):
+def get_gpt_temp(form_data=None, user_prompt=None):
     """
     Generiert einen Prompt für den GPT-Dienst.
 
@@ -172,3 +173,54 @@ def get_gpt(form_data=None, user_prompt=None):
     return first_response
 
 
+def get_gpt(user_prompt, chat_profile):
+    if user_prompt is None:
+        user_prompt = "You're a DungeonMaster, you create a dungeon scenario and I'm the main character. You start the story, but please not too long responses"
+
+    model_name = "cognitivecomputations/dolphin3.0-mistral-24b:free"
+
+    if not model_name.__contains__(":free"):
+        raise Exception("This AI model is not free, I don't want to pay for tokens >:(")
+    else:
+        # Prepare the messages for the API call
+        messages = []
+        if chat_profile.jsonText:
+            messages = json.loads(chat_profile.jsonText)
+
+        messages.append({
+            "role": "user",
+            "content": user_prompt
+        })
+
+        response = requests.post(
+            url="https://openrouter.ai/api/v1/chat/completions",
+            headers={
+                "Authorization": "Bearer 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",
+                "Content-Type": "application/json",
+                "HTTP-Referer": "<YOUR_SITE_URL>",  # Optional. Site URL for rankings on openrouter.ai.
+                "X-Title": "<YOUR_SITE_NAME>",  # Optional. Site title for rankings on openrouter.ai.
+            },
+            data=json.dumps({
+                "model": model_name,
+                "messages": messages,
+            })
+        )
+
+        response_data = response.json()
+        assistant_response = response_data['choices'][0]['message']['content']
+
+        # Update the chat history
+        messages.append({
+            "role": "assistant",
+            "content": assistant_response
+        })
+
+        # Keep only the initial user message and the last 5 interactions
+        initial_message = messages[0]
+        if len(messages) > 11:  # 1 initial message + 5 pairs of user-assistant messages
+            messages = [initial_message] + messages[3:]
+
+        chat_profile.jsonText = json.dumps(messages)
+        chat_profile.save()
+
+    return assistant_response
