@@ -86,9 +86,14 @@
         function clearTextarea() {
             document.getElementById('sendBtn').value = '';
         }
+
+        function loadChat() {
+            const messageBody = document.querySelector('#messageBody');
+            messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
+        }
     </script>
 </head>
-<body>
+<body onload="loadChat()">
 <header>
 <nav class="navbar navbar-expand-lg bg-secondary bg-opacity-50">
   <div class="container-fluid">
@@ -123,9 +128,11 @@
             <h2>Django Dungeon-s</h2><p class="h5">Hello {{ user.username }}</p>
 
         </div>
-        <div class="chat-field text-center" style="border: solid 1.2px blue">
+        <div>
             {% if request.user.is_authenticated%}
-                <div class="chat-background">
+                <div class="chat-field text-center" style="position: relative;">
+                    <img src="{% static 'img/template.gif' %}" alt="gif background" style="position: absolute; top: 0; left: 0;width: 100%;height: 100%; z-index: -1; opacity: 75%"/>
+                    <div class="chat-background" id="messageBody" style="position: relative; z-index: 1;">
                         {% for msg in messages %}
                             {% if msg.userId_id > 0 %}
                                 <div class="chat-container chat-con-right darker">
@@ -141,39 +148,20 @@
                                 </div>
                             {% endif %}
                         {% endfor %}
-                    <!--<hr>
-                    <div class="chat-container chat-con-left">
-                      <img src="{% static 'img/char1.png' %}" alt="Avatar" class="avatar-img">
-                      <p>You need to save the village from evil goblins, they choose you as the only one goblin-hunter. You need to defeat the goblin-chief. Do you want to join the adventure?</p>
-                      <span class="time-right">11:00</span>
                     </div>
-                    <div class="chat-container chat-con-right darker">
-                        <img src="{% static 'img/char2.jpg' %}" alt="Avatar" class="avatar-img right">
-                        <p>Yes, i want!</p>
-                        <span class="time-left">11:01</span>
-                    </div>
-                    <div class="chat-container chat-con-left">
-                      <img src="{% static 'img/char1.png' %}" alt="Avatar" class="avatar-img">
-                      <p>Excellent, i will give you this sword to use.</p>
-                      <span class="time-right">11:00</span>
-                    </div>
-                    <div class="chat-container chat-con-left">
-                      <img src="{% static 'img/char1.png' %}" alt="Avatar" class="avatar-img">
-                      <img src="{% static 'img/sword.png' %}" width="20%" height="20%"/>
-                      <span class="time-right">11:00</span>
-                    </div>-->
                 </div>
-                <hr/>
-                <form method="post" onsubmit="clearTextarea()">
-                    {% csrf_token %}
-                    <div class="container input-group mb-3">
-                        <!--<textarea class="form-control chat-input" placeholder="What do you want to do?"></textarea>-->
-                        {{ form.text_field }}
-                        <button class="btn btn-primary" type="submit" id="sendBtn">Send</button>
-                    </div>
-                </form>
-                <br>
-                <a class="btn btn-outline-danger" href="/delete_chat_view/" style="margin-bottom: 0.5%">Neuanfangen</a>
+                <div class="chat-field text-center" style="margin-top: 1%">
+                    <form method="post" onsubmit="clearTextarea()">
+                        {% csrf_token %}
+                        <div class="container input-group mb-3">
+                            <!--<textarea class="form-control chat-input" placeholder="What do you want to do?"></textarea>-->
+                            {{ form.text_field }}
+                            <button class="btn btn-primary" type="submit" id="sendBtn" onsubmit="clearTextarea()">Send</button>
+                        </div>
+                    </form>
+                    <br>
+                    <a class="btn btn-outline-danger" href="/delete_chat_view/" style="margin-bottom: 0.5%">Neuanfangen</a>
+                </div>
             {% else %}
                 <p>melde dich an!</p>
                 <a href="/login/" class="btn btn-primary">Anmelden</a>
