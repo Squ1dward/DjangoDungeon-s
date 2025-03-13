@@ -155,6 +155,38 @@
             height: 40px;
             overflow: hidden;
         }
+
+/* Ensure the page takes up full height */
+html, body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Main content should expand to push the footer down */
+main {
+    flex: 1;
+}
+
+/* Footer styling */
+.footer {
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    background: #f8f9fa;
+    text-align: center;
+    padding: 10px 0;
+    border-top: 1px solid #ccc;
+}
+
+/* Prevent footer from overlapping the floating chat */
+.chat-window {
+    bottom: 70px; /* Keeps it above the footer */
+}
+
+
+
     </style>
 </head>
 <body>
@@ -237,11 +269,12 @@
         }
     };
 
-    function sendMessage() {
-        const inputField = document.getElementById("chat-input-float");
-        const message = inputField.value.trim();
+   function sendMessage() {
+    const inputField = document.getElementById("chat-input-float");
+    const message = inputField.value.trim();
 
-        if (message !== "") {
+    if (message !== "") {
+        if (chatSocket.readyState === WebSocket.OPEN) {
             try {
                 chatSocket.send(JSON.stringify({
                     "username": username,
@@ -252,8 +285,17 @@
             } catch (error) {
                 console.error("Error sending WebSocket message:", error);
             }
+        } else {
+            console.warn("WebSocket is closed. Trying to reconnect...");
+            reconnectWebSocket();  // Attempt to reconnect
         }
     }
+}
+function reconnectWebSocket (){
+       /*
+       implement reconnect function later!!!
+        */
+}
 
     function logMessage(sender, message) {
         const chatWindow = document.getElementById("chat-body");
