@@ -42,11 +42,11 @@ def index(request):
             chat_message_from_gpt.save()
             chat_profile = ChatProfile.objects.get(createdBy=request.user.id)
             chat_messages = ChatMessage.objects.filter(profileId=chat_profile.id).values()
+            form = ChatForm()
             messages_dict = {
                 'messages': chat_messages,
                 'form': form
             }
-            form = ChatForm()
             return HttpResponse(template.render(messages_dict, request))
     else:
         form = ChatForm()
