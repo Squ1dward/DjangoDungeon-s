@@ -1,7 +1,6 @@
 from django.urls import path
-from .consumers import chatter
+from .consumers import ChatConsumer  # Import the consumer
 
-# WebSocket URL patterns (directly inside DjangoDungeons)
 websocket_urlpatterns = [
-    path("ws/chat/<str:lobby_name>/", chatter.as_asgi()),  # WebSocket chat route
+    path("ws/chat/", ChatConsumer.as_asgi()),  # WebSocket route
 ]

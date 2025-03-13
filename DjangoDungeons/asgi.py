@@ -11,18 +11,16 @@ import os
 from django.core.asgi import get_asgi_application
 from channels.routing import ProtocolTypeRouter, URLRouter
 from channels.auth import AuthMiddlewareStack
+from .websockets import websocket_urlpatterns
 
-from DjangoDungeons.wsgi import application
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'DjangoDungeons.settings')
 
 application = ProtocolTypeRouter({
-    'http': get_asgi_application(),
-    "websocket": AuthMiddlewareStack(URLRouter(
-        URLRouter([
-            #Web Socket place will be here
-        ])
-    ))
+    "http": get_asgi_application(),
+    "websocket": AuthMiddlewareStack(
+        URLRouter(websocket_urlpatterns)
+    ),
 })
 
 
