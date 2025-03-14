@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Welt erstellen</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            padding: 30px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 40px;
+        }
+
+        form {
+            background-color: white;
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .field {
+            margin-bottom: 30px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .input, .textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 14px;
+            resize: vertical;
+        }
+
+        .radio {
+            margin-top: 10px;
+        }
+
+        .radio div {
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        .radio input[type="radio"] {
+            display: none;
+        }
+
+        .radio label {
+            display: inline-block;
+            background-color: #ddd;
+            color: #333;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .radio input[type="radio"]:checked + label {
+            background-color: #007bff;
+            color: white;
+        }
+
+        button[type="submit"] {
+            background-color: #28a745;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #218838;
+        }
+
+        .radio input[type="radio"]:checked + label {
+    background-color: #007bff;
+    color: white;
+    box-shadow: 0 0 10px 3px rgba(0, 123, 255, 0.6); /* Leuchteffekt */
+    transform: scale(1.05); /* leicht größer */
+    font-weight: bold;
+}
+
+        .radio label:hover {
+    background-color: #ccc;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease-in-out;
+}
+
+    </style>
+</head>
+<body>
+    <h1>Welt erstellen</h1>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="field">
+            {{ form.name.label_tag }}
+            {{ form.name }}
+        </div>
+
+        <div class="field">
+            {{ form.race.label_tag }}
+            {{ form.race }}
+        </div>
+
+        <div class="field">
+            {{ form.genre.label_tag }}
+            {{ form.genre }}
+        </div>
+
+        <div class="field">
+            {{ form.weapon.label_tag }}
+            {{ form.weapon }}
+        </div>
+
+        <div class="field">
+            {{ form.char_desc.label_tag }}
+            {{ form.char_desc }}
+        </div>
+
+        <div class="field">
+            {{ form.world_desc.label_tag }}
+            {{ form.world_desc }}
+        </div>
+
+        <div class="field">
+            <button type="submit">Absenden</button>
+        </div>
+    </form>
+</body>
+</html>

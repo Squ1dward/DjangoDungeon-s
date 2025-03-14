@@ -9,6 +9,36 @@ class LoginForm(forms.Form):
 class ChatForm(forms.Form):
     text_field = forms.CharField(widget=forms.Textarea(attrs={'class':'form-control chat-input','placeholder':'What do you want to do?'}), required=True, )
 
+class WorldBuildingFormular(forms.Form):
+    RASSEN = [
+        ('human', 'Mensch'),
+        ('dwarf', 'Zwerg'),
+        ('elf', 'Elfe'),
+        ('sapling', 'Dirnensprüssling'),
+        ('dumbass', 'Hurensohn'),
+    ]
+    GESCHLECHTER = [
+        ('man', 'Männlich'),
+        ('woman', 'Weiblich'),
+        ('unknown', 'Etc..'),
+    ]
+    KAMPF = [
+        ('sword', 'Schwert'),
+        ('magic', 'Magie'),
+        ('bow & arrow', 'Pfeil und Bogen'),
+        ('lance', 'Lanze'),
+    ]
+
+    name = forms.CharField(label="Name", max_length=100, widget=forms.TextInput(attrs={'class': 'input'}))
+    race = forms.ChoiceField(label="Rasse", choices=RASSEN, widget=forms.RadioSelect(attrs={'class': 'radio'}))
+    genre = forms.ChoiceField(label="Geschlecht", choices=GESCHLECHTER,
+                                   widget=forms.RadioSelect(attrs={'class': 'radio'}))
+    weapon = forms.ChoiceField(label="Kampfstil", choices=KAMPF, widget=forms.RadioSelect(attrs={'class': 'radio'}))
+    char_desc = forms.CharField(label="Charakterbeschreibung",
+                                            widget=forms.Textarea(attrs={'class': 'textarea'}))
+    world_desc = forms.CharField(label="Weltbeschreibung", widget=forms.Textarea(attrs={'class': 'textarea'}))
+
+
 class RegisterForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput)
     confirm_password = forms.CharField(widget=forms.PasswordInput)
@@ -26,3 +56,4 @@ class RegisterForm(forms.ModelForm):
             raise forms.ValidationError("Passwords do not match")
 
         return cleaned_data
+
