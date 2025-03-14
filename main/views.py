@@ -122,7 +122,7 @@ def get_gpt(user_prompt):
         "model": "cognitivecomputations/dolphin3.0-mistral-24b:free",
         "messages": [
           {
-            "role": "user",
+            "role": "sx",
             "content": user_prompt
           }
         ],
