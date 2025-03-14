@@ -1,0 +1,85 @@
+.chat-window {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 300px;
+    height: 350px;
+    background: #ffffff;
+    border: 2px solid #007bff;
+    border-radius: 10px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 1000;
+}
+
+.chat-header {
+    background: #007bff;
+    color: white;
+    padding: 10px;
+    font-size: 16px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.chat-body {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+    background: #f8f9fa;
+}
+
+.chat-message {
+    padding: 5px;
+    margin: 5px;
+    border-radius: 5px;
+    word-wrap: break-word;
+}
+
+.message-left {
+    background: #e9ecef;
+    align-self: flex-start;
+    text-align: left;
+    padding: 5px 10px;
+}
+
+.message-right {
+    background: #007bff;
+    color: white;
+    align-self: flex-end;
+    text-align: right;
+    padding: 5px 10px;
+}
+
+.chat-footer {
+    display: flex;
+    padding: 5px;
+    background: #ffffff;
+    border-top: 1px solid #ddd;
+}
+
+.chat-input {
+    flex: 1;
+    border: none;
+    padding: 8px;
+    outline: none;
+}
+
+.chat-send {
+    background: #007bff;
+    border: none;
+    color: white;
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+.chat-send:hover {
+    background: #0056b3;
+}
+
+/* Minimized Chat */
+.chat-minimized {
+    height: 40px;
+    overflow: hidden;
+}
