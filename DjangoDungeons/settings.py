@@ -31,7 +31,9 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
     'main',
+    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -39,7 +41,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     #'bootstrap5',
-    'channels',
 
 ]
 # Chat Config
@@ -50,7 +51,7 @@ Channel_Layers = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG':{
-            'host': [('127.0.0.1', 6379)],
+            'host': [('172.17.0.2', 6379)],
         },
     },
 }

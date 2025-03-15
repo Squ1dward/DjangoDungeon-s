@@ -1,0 +1,16 @@
+{% load static %}
+{% for msg in messages %}
+    {% if msg.userId_id > 0 %}
+        <div class="chat-container chat-con-right darker">
+            <img src="{% static 'img/char2.jpg' %}" alt="Avatar" class="avatar-img right">
+            <p>{{ msg.message }}</p>
+            <span class="time-right">{{ msg.postDate }}</span>
+        </div>
+    {% else %}
+        <div class="chat-container chat-con-left">
+            <img src="{% static 'img/char1.png' %}" alt="Avatar" class="avatar-img">
+            <p>{{ msg.message }}</p>
+            <span class="time-left">{{ msg.postDate }}</span>
+        </div>
+    {% endif %}
+{% endfor %}

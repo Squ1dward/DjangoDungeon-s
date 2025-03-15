@@ -30,10 +30,9 @@ class WorldBuildingFormular(forms.Form):
     ]
 
     name = forms.CharField(label="Name", max_length=100, widget=forms.TextInput(attrs={'class': 'input'}))
-    race = forms.ChoiceField(label="Rasse", choices=RASSEN, widget=forms.RadioSelect(attrs={'class': 'radio'}))
-    genre = forms.ChoiceField(label="Geschlecht", choices=GESCHLECHTER,
-                                   widget=forms.RadioSelect(attrs={'class': 'radio'}))
-    weapon = forms.ChoiceField(label="Kampfstil", choices=KAMPF, widget=forms.RadioSelect(attrs={'class': 'radio'}))
+    race = forms.ChoiceField(label="Rasse", choices=RASSEN, widget=forms.RadioSelect(attrs={}))
+    genre = forms.ChoiceField(label="Geschlecht", choices=GESCHLECHTER, widget=forms.RadioSelect(attrs={}))
+    weapon = forms.ChoiceField(label="Kampfstil", choices=KAMPF, widget=forms.RadioSelect(attrs={}))
     char_desc = forms.CharField(label="Charakterbeschreibung",
                                             widget=forms.Textarea(attrs={'class': 'textarea'}))
     world_desc = forms.CharField(label="Weltbeschreibung", widget=forms.Textarea(attrs={'class': 'textarea'}))

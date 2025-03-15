@@ -3,7 +3,9 @@ from logging import exception
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.template import loader
+from django.template.loader import render_to_string
 from django.utils import timezone
+from django.views.decorators.csrf import csrf_exempt
 
 from .models import User, ChatProfile, ChatMessage
 from django.contrib.auth import authenticate, login, logout
@@ -52,9 +54,44 @@ def index(request):
         form = ChatForm()
         messages_dict = {
             'messages': chat_messages,
+            'last_msg': "",
             'form': form
         }
     return HttpResponse(template.render(messages_dict, request))
+
+@csrf_exempt
+def send_message(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        message = data.get('message')
+        chat_profile = ChatProfile.objects.get(createdBy=request.user.id)
+        new_message = ChatMessage(profileId=chat_profile, userId_id=request.user.id, message=message, postDate=timezone.now())
+        new_message.save()
+        chat_messages = ChatMessage.objects.filter(profileId=chat_profile.id).values()
+        context = {
+            'messages': chat_messages,
+            'last_msg': ""
+        }
+        html = render_to_string('main/chat_messages.html', context, request)
+        return HttpResponse(html)
+
+@csrf_exempt
+def llm_message(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        message = data.get('message')
+        chat_profile = ChatProfile.objects.get(createdBy=request.user.id)
+        response_from_gpt = get_gpt(message, None, chat_profile)
+        chat_message_from_gpt = ChatMessage(profileId=chat_profile, userId_id=0, message=response_from_gpt,
+                                            postDate=timezone.now())
+        chat_message_from_gpt.save()
+        chat_messages = ChatMessage.objects.filter(profileId=chat_profile.id).values()
+        context = {
+            'messages': chat_messages,
+            'last_msg': response_from_gpt
+        }
+        html = render_to_string('main/chat_messages.html', context, request)
+        return HttpResponse(html)
 
 def stats(request):
     model = User.objects.all()
