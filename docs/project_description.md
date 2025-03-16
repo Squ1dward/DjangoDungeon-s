@@ -1,48 +1,30 @@
 # DjangoDungeons
-#### von Dominik Golenja, Armin Großmann und Ali Herz entwickelt.
 
-## Beschreibung:
-<!-- Dominik Teil: Hier kannst du es zusammenfassen -->
-* Chat-Spiel
-* DungeonMaster mit KI (LLM)
-* Personalisierte Geschichte erstellen
-* Nur auf Englisch
-* Lobby-Chat mit anderen Online-Spielern austauschen
-<br><br>
-### <u>Must-Have Features</u>:
+**DjangoDungeons** ist ein innovatives textbasiertes Rollenspiel, entwickelt von Dominik Golenja, Armin Großmann und Ali Herz. Das Besondere: Eine künstliche Intelligenz übernimmt die Rolle des Dungeon-Masters und steuert das Abenteuer dynamisch. Spieler treffen Entscheidungen, geben Befehle über einen Chat ein und erleben eine interaktive, personalisierte Geschichte, die sich in Echtzeit entwickelt. Das Spiel ist ausschließlich auf Englisch verfügbar und bietet eine Lobby, in der sich Spieler untereinander austauschen können.  
 
-#### Dungeon-Master (KI-gesteuert):
-* Ein intelligentes System, das als Dungeon-Master fungiert und die Spielelemente sowie die Erzählstruktur dynamisch steuert.
-* Die KI reagiert auf Spieleraktionen und erstellt neue Szenarien basierend auf den Entscheidungen und Interaktionen der Spieler.
+## **Kernmechaniken und Features**  
 
-#### Chat-System für Befehle:
-* Ein robustes Chat-System, in dem Spieler textbasierte Befehle eingeben können, um mit der Spielwelt zu interagieren.
-* Echtzeit-Antworten und Aktionen basierend auf den eingegebenen Befehlen.
+Der **KI-gesteuerte Dungeon-Master** fungiert als Spielleiter und passt Handlung sowie Umgebung basierend auf Spielerinteraktionen an. Die Erzählstruktur verändert sich dynamisch, sodass jede Spielsitzung einzigartig verläuft. Das **Chat-System für Befehle** ermöglicht eine direkte Steuerung des Spiels durch textbasierte Eingaben, auf die die KI intelligent reagiert. Ergänzt wird dies durch einen **Algorithmus zur Geschichtenerstellung**, der eine fortlaufende, verzweigte Handlung generiert, die sich individuell an die Entscheidungen der Spieler anpasst.  
 
-#### Algorithmus zur Geschichtenerstellung:
-* Ein Algorithmus, der auf Basis der Interaktionen und Entscheidungen der Spieler individuelle Geschichten erstellt.
-* Anpassbare Erzählungen, die sich je nach Spielerwahl entwickeln und verzweigen.
+Da das Spiel textbasiert ist, gibt es keine visuellen Darstellungen von Charakteren oder Umgebungen. Die gesamte Atmosphäre entsteht durch die detaillierten Beschreibungen der KI und die Vorstellungskraft der Spieler.  
 
- 
+## **Erweiterte Funktionen für ein noch tiefgründigeres Erlebnis**  
 
-### <u>Nice-To-Have Features</u>:
+Neben diesen Kernmechaniken bietet **DjangoDungeons** zusätzliche Features, die das Spiel weiter vertiefen.  
 
-#### Personalisierung von Charakteren:
-* Möglichkeiten für Spieler, ihre Charaktere zu erstellen und anzupassen, einschließlich Aussehen, Fähigkeiten und Ausrüstung.
-* Integration von Charakterprofilen, die im Spiel fortschreiten und sich entwickeln können.
+- **Charakter-Entwicklung**: Spieler können ihre Charaktere mit individuellen Fähigkeiten und Ausrüstungen anpassen. Während des Spiels entwickeln sich Charaktere weiter, wodurch neue Möglichkeiten und Herausforderungen entstehen. Die Anpassung des Aussehens ist in der textbasierten Umgebung jedoch nicht vorgesehen.  
+- **Dungeon-Editor**: Ein integrierter Editor ermöglicht das Erstellen eigener Dungeons, die mit der Community geteilt werden können. So entstehen immer neue Abenteuer.  
+- **Multiplayer-Modus**: Spieler können gemeinsam Dungeons erkunden, Rätsel lösen und Gegner besiegen. Kommunikation und Teamwork stehen dabei im Fokus.  
 
-#### Eigene Erweiterung der Dungeons:
-* Ein Editor-Modus, der Spielern erlaubt, ihre eigenen Dungeons zu gestalten und ins Spiel zu integrieren.
-* Austauschbare Community-Inhalte, die es Spielern ermöglichen, ihre Dungeons zu teilen und herunterzuladen.
+## **Technische Umsetzung und KI-Integration**  
 
-#### Multiplayer-Funktion:
-* Unterstützung für Mehrspieler-Szenarien, in denen mehrere Spieler gleichzeitig im gleichen Dungeon-Abenteuer zusammenarbeiten können.
-* Kommunikations- und Kollaborationsfunktionen innerhalb des Spiels, um eine reibungslose Teamarbeit zu ermöglichen.
+Das Spiel basiert auf:  
 
+- **Backend**: Django  
+- **Frontend**: JavaScript, HTML, CSS  
+- **Datenbank**: PostgreSQL oder SQLite  
+- **KI-Integration**: TensorFlow oder PyTorch für die KI-Mechaniken, mit der Möglichkeit, bestehende Community-KI-Modelle zu nutzen.  
 
-### <u>Technische Umsetzung</u>:
+## **Ein einzigartiges Spielerlebnis**  
 
-* Backend: Django Framework.
-* Frontend: JavaScript, HTML, CSS.
-* Datenbank: PostgreSQL oder SQLite.
-* KI-Integration: Nutzung von Machine Learning Bibliotheken wie TensorFlow oder PyTorch zur Entwicklung des KI-gesteuerten Dungeon-Masters und/oder Nutzung von Community bereitsgestellten KIs.
+Mit einer intelligenten Spielleitung, interaktiver Story-Entwicklung und vielseitigen Anpassungsmöglichkeiten verbindet **DjangoDungeons** klassische Dungeon-Abenteuer mit modernster KI-Technologie. Durch die dynamische Erzählweise, die Möglichkeit zur Charakteranpassung und die Integration von Multiplayer- und Community-Features bietet das Spiel ein tiefgehendes, interaktives Rollenspielerlebnis, das sich stets neu entfaltet.
