@@ -1,4 +1,7 @@
 # DjangoDungeon-s
+## Bevor:
+Bitte unter Ordner main/views.py in `API_KEY = "<ENTER_YOUR_API_KEY>"` die gegebenen API_KEY in itslearning, sonst funktioniert der DungeonMaster nicht.
+
 ## How to use
 * Registrieren Sie oder mit fertigen Login-Konto unter "Accounts" sich einloggen
 * Klicken Sie auf Neuanfangen, wenn Sie ihr Dungeon-Spiel von vorne neustarten möchten, leitet der Seite zur Geschichterstellung

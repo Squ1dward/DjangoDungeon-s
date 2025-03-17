@@ -21,6 +21,8 @@ import json
 
 # Create your views here.
 
+API_KEY = "<ENTER_YOUR_API_KEY>"
+
 def index(request):
     messages_dict = {}
     model = User.objects.all()
@@ -203,7 +205,7 @@ def get_gpt(user_prompt, build_story, chat_profile):
         response = requests.post(
             url="https://openrouter.ai/api/v1/chat/completions",
             headers={
-                "Authorization": "Bearer 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",
+                "Authorization": "Bearer " + API_KEY,
                 "Content-Type": "application/json",
                 "HTTP-Referer": "<YOUR_SITE_URL>",  # Optional. Site URL for rankings on openrouter.ai.
                 "X-Title": "<YOUR_SITE_NAME>",  # Optional. Site title for rankings on openrouter.ai.
