@@ -14,8 +14,8 @@ class WorldBuildingFormular(forms.Form):
         ('human', 'Mensch'),
         ('dwarf', 'Zwerg'),
         ('elf', 'Elfe'),
-        ('sapling', 'Dirnensprüssling'),
-        ('dumbass', 'Hurensohn'),
+        ('sapling', 'Sprössling'),
+        ('dumbass', 'Jackass'),
     ]
     GESCHLECHTER = [
         ('man', 'Männlich'),
